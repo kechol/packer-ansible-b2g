@@ -1,0 +1,56 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  sudo: yes
+
+  vars:
+    - ccache_size: 3GB
+    - git_user: b2g
+    - git_email: b2g@example.com
+    - b2g_repo: git://github.com/mozilla-b2g/B2G.git
+
+  tasks:
+    - name: update apt
+      apt:
+        update_cache=yes
+
+    - name: install packages
+      shell: apt-get -y install {{item}}
+      with_items:
+        - zsh
+        - tmux
+        - git
+        - openjdk-6-jdk
+        - autoconf2.13
+        - bison
+        - bzip2
+        - ccache
+        - curl
+        - flex
+        - gawk
+        - gcc
+        - g++
+        - g++-multilib
+        - ia32-libs
+        - lib32ncurses5-dev
+        - lib32z1-dev
+        - libgl1-mesa-dev
+        - libx11-dev
+        - make
+        - zip
+
+    - name: change ccache size
+      command: ccache --max-size {{ccache_size}}
+
+    - name: set git config
+      sudo_user: ubuntu
+      command: git config --global user.name {{git_user}}
+      command: git config --global user.email {{git_email}}
+      command: git config --global color.ui true
+
+    - name: clone B2G repo
+      sudo_user: ubuntu
+      git:
+        repo={{b2g_repo}}
+        dest=/home/ubuntu/b2g
+        update=yes

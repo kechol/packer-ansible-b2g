@@ -1,0 +1,46 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "ap-northeast-1",
+      "source_ami": "ami-1b50031a",
+      "instance_type": "m1.small",
+      "ssh_username": "ubuntu",
+      "ami_name": "b2g {{timestamp}}",
+      "ami_block_device_mappings": [
+        {
+          "device_name": "/dev/sdb",
+          "virtual_name": "sdb0",
+          "volume_size": "30"
+        }
+      ],
+      "tags": {
+        "name": "b2g",
+        "os": "Ubuntu 12.04 LTS",
+        "source": "ami-1b50031a",
+        "timestamp": "{{timestamp}}"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo apt-get -y install software-properties-common",
+        "sudo apt-add-repository -y ppa:ansible/ansible",
+        "sudo apt-get -y update",
+        "sudo apt-get -y install ansible"
+      ]
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "b2g.yml"
+    }
+  ]
+}
