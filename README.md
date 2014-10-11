@@ -1,15 +1,15 @@
-# pack-b2g-ubuntu
+# packer-ansible-b2g
 
-This is a example files to build ami for b2g(boot2gecko).
+This is a Ansible recipe to make reusable AMI for b2g(boot2gecko).
 
 
-## requirements
+## Requirements
 
 - [Packer](http://www.packer.io/)
 - [Ansible](http://www.ansible.com/home)
 
 
-## build
+## How to Use
 
 ```
 $ packer build -var-file=aws_credentials.json ami.json
@@ -36,7 +36,7 @@ $ packer build\
 ```
 
 
-## resources
+## Resources
 
 - [Firefox OS build prerequisites - Mozilla | MDN](https://developer.mozilla.org/en-US/Firefox_OS/Firefox_OS_build_prerequisites)
 - [Ubuntu Cloud Images](http://cloud-images.ubuntu.com/)
